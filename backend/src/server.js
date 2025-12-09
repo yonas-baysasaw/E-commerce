@@ -1,12 +1,15 @@
-import express from 'express'
-import path from 'path';
-import { ENV } from '../config/env.js';
+import express from "express";
+import path from 'path'
+import { ENV } from "./config/env.js";
+
+
+const app = express();
+
 const __dirname = path.resolve()
-const app = express()
-app.get("/api/health", (req, res) =>{
-    res.status(200).json({message : "Success"})
-})
-//make out app ready for deployment
+
+app.get("/api/health", (_req, res) => {
+    res.status(200).json({ message: "the server is running" });
+});
 if(ENV.NODE_ENV == 'production'){
     app.use(express.static(path.join(__dirname, "../admin/dist")))
     app.get("/{*any}", (req, res)=>{
@@ -14,4 +17,6 @@ if(ENV.NODE_ENV == 'production'){
     })
 }
 
-app.listen(ENV.PORT,() => console.log("start a server 132"))
+app.listen(ENV.PORT, () => {
+  console.log(`http://localhost:${ENV.PORT}`);
+});
